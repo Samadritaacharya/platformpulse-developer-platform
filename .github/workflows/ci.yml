@@ -5,16 +5,90 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: platformpulse-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
+  quality-and-security:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: "3.11"
           cache: pip
-      - run: python -m pip install --upgrade pip
+      - name: Install application and security tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install pip-audit==2.9.0 bandit==1.8.6
+      - name: Dependency consistency
+        run: python -m pip check
+      - name: Unit and UI tests
+        run: python -m pytest -q --disable-warnings --maxfail=1
+      - name: Compile application
+        run: python -m compileall app.py platformpulse scripts
+      - name: Static security analysis
+        run: bandit -q -r app.py platformpulse scripts -x tests -ll
+      - name: Dependency vulnerability audit
+        run: pip-audit -r requirements.txt --progress-spinner off
+
+  streamlit-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: "3.11"
+          cache: pip
       - run: python -m pip install -r requirements.txt
-      - run: python -m pytest -q
-      - run: python -m compileall app.py platformpulse
+      - name: Start Streamlit and verify health
+        run: |
+          python -m streamlit run app.py --server.headless true --server.port 8501 > /tmp/platformpulse.log 2>&1 &
+          APP_PID=$!
+          trap 'cat /tmp/platformpulse.log; kill $APP_PID || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8501/_stcore/health | grep -q ok; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Streamlit health check failed"
+          exit 1
+
+  generated-service-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Generate and test secure starter
+        run: |
+          python scripts/export_demo_service.py --output generated
+          python -m venv /tmp/golden-path-venv
+          /tmp/golden-path-venv/bin/python -m pip install --upgrade pip
+          /tmp/golden-path-venv/bin/python -m pip install -r generated/demo-secure-api/requirements.txt
+          /tmp/golden-path-venv/bin/python -m pytest -q generated/demo-secure-api/tests
+      - name: Build and run generated container
+        run: |
+          docker build -t platformpulse-generated:ci generated/demo-secure-api
+          docker run -d --name platformpulse-generated -p 8000:8000 --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges platformpulse-generated:ci
+          trap 'docker logs platformpulse-generated || true; docker rm -f platformpulse-generated || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8000/health | grep -q '"status":"ok"'; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Generated service health check failed"
+          exit 1
