@@ -1,0 +1,76 @@
+name: PlatformPulse Visual Site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate static site
+        run: |
+          test -f site/index.html
+          test -f site/styles.css
+          test -f site/app.js
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          class Parser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.local_refs = []
+
+              def handle_starttag(self, tag, attrs):
+                  values = dict(attrs)
+                  for key in ("href", "src"):
+                      value = values.get(key, "")
+                      if value and not value.startswith(("http://", "https://", "#", "mailto:", "data:")):
+                          self.local_refs.append(value.split("?", 1)[0].split("#", 1)[0])
+
+          root = Path("site")
+          parser = Parser()
+          parser.feed((root / "index.html").read_text(encoding="utf-8"))
+          missing = sorted({ref for ref in parser.local_refs if ref and not (root / ref).exists()})
+          if missing:
+              raise SystemExit(f"Missing local assets: {missing}")
+          print("Static site references validated.")
+          PY
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
