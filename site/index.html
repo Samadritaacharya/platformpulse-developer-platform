@@ -5,26 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="PlatformPulse is an interactive Developer Platform product lab covering discovery, secure self-service, CI/CD metrics, experimentation, AI governance and reliability.">
   <meta name="theme-color" content="#07111f">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
   <title>PlatformPulse — Developer Platform Product Lab</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="progress.css">
   <script src="app.js" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-
   <header class="site-header">
     <a class="brand" href="#top" aria-label="PlatformPulse home">
       <span class="brand-mark" aria-hidden="true">P</span>
-      <span>
-        <strong>PlatformPulse</strong>
-        <small>Developer Platform Product Lab</small>
-      </span>
+      <span><strong>PlatformPulse</strong><small>Developer Platform Product Lab</small></span>
     </a>
     <nav aria-label="Primary navigation">
-      <a href="#product">Product</a>
-      <a href="#architecture">Architecture</a>
-      <a href="#quality">Quality</a>
+      <a href="#product">Product</a><a href="#architecture">Architecture</a><a href="#quality">Quality</a>
       <a class="nav-cta" href="https://github.com/Samadritaacharya/platformpulse-developer-platform" rel="noreferrer">GitHub ↗</a>
     </nav>
   </header>
@@ -34,24 +29,15 @@
       <div class="hero-copy">
         <div class="eyebrow">Developer Experience · Platform Product · Secure by Design</div>
         <h1>Make the supported path the easiest path.</h1>
-        <p class="hero-lead">PlatformPulse is an end-to-end product prototype connecting developer discovery, secure golden paths, service ownership, CI/CD health, A/B experimentation, AI governance and evidence-based roadmap decisions.</p>
+        <p class="hero-lead">PlatformPulse connects developer discovery, secure golden paths, service ownership, CI/CD health, A/B experimentation, AI governance and evidence-based roadmap decisions.</p>
         <div class="hero-actions">
           <a class="button primary" href="#product">Explore interactive demo</a>
           <a class="button secondary" href="https://github.com/Samadritaacharya/platformpulse-developer-platform" rel="noreferrer">View source code</a>
         </div>
-        <div class="badge-row" aria-label="Project highlights">
-          <span>9 product views</span>
-          <span>Automated QA</span>
-          <span>Security scans</span>
-          <span>Synthetic data only</span>
-        </div>
+        <div class="badge-row" aria-label="Project highlights"><span>9 product views</span><span>Automated QA</span><span>Security scans</span><span>Synthetic data only</span></div>
       </div>
-
       <aside class="hero-panel" aria-label="Platform outcome snapshot">
-        <div class="panel-topline">
-          <span>Platform health</span>
-          <span class="live-dot">Validated</span>
-        </div>
+        <div class="panel-topline"><span>Platform health</span><span class="live-dot">Validated</span></div>
         <div class="metric-grid compact">
           <article><strong data-counter="82">0</strong><span>Developer experience</span></article>
           <article><strong data-counter="91">0</strong><span>Pipeline success</span></article>
@@ -63,19 +49,13 @@
       </aside>
     </section>
 
-    <section class="trust-strip" aria-label="Technology stack">
-      <span>Python</span><span>Streamlit</span><span>FastAPI</span><span>GitHub Actions</span><span>Docker</span><span>Kubernetes</span><span>Helm</span><span>pytest</span>
-    </section>
+    <section class="trust-strip" aria-label="Technology stack"><span>Python</span><span>Streamlit</span><span>FastAPI</span><span>GitHub Actions</span><span>Docker</span><span>Kubernetes</span><span>Helm</span><span>pytest</span></section>
 
     <section class="product-section" id="product">
       <div class="section-heading">
-        <div>
-          <div class="eyebrow">Interactive product tour</div>
-          <h2>From developer friction to platform outcomes</h2>
-        </div>
+        <div><div class="eyebrow">Interactive product tour</div><h2>From developer friction to platform outcomes</h2></div>
         <p>Use the controls below. Everything runs locally in your browser and uses synthetic demonstration data.</p>
       </div>
-
       <div class="product-shell">
         <div class="tab-list" role="tablist" aria-label="PlatformPulse product areas">
           <button role="tab" aria-selected="true" aria-controls="panel-overview" id="tab-overview" data-tab="overview">Overview</button>
@@ -93,177 +73,50 @@
             <article><span>Median MTTR</span><strong>31 min</strong><small>Runbook-assisted recovery</small></article>
           </div>
           <div class="two-column">
-            <article class="surface">
-              <h3>Evidence-to-outcome workflow</h3>
-              <ol class="flow-list">
-                <li><b>Discover</b><span>Interview, survey and journey evidence</span></li>
-                <li><b>Prioritise</b><span>Impact, confidence, effort and reliability risk</span></li>
-                <li><b>Deliver</b><span>Secure self-service artefacts and acceptance criteria</span></li>
-                <li><b>Measure</b><span>Adoption, flow, reliability and user outcomes</span></li>
-              </ol>
-            </article>
-            <article class="surface">
-              <h3>Now / Next / Later</h3>
-              <div class="roadmap">
-                <div><span>NOW</span><strong>Secure service golden path</strong><small>Reduce setup time and configuration drift</small></div>
-                <div><span>NEXT</span><strong>Faster pipeline feedback</strong><small>Improve developer flow and failure diagnosis</small></div>
-                <div><span>LATER</span><strong>Ownership intelligence</strong><small>Predict stale or unsupported services</small></div>
-              </div>
-            </article>
+            <article class="surface"><h3>Evidence-to-outcome workflow</h3><ol class="flow-list"><li><b>Discover</b><span>Interview, survey and journey evidence</span></li><li><b>Prioritise</b><span>Impact, confidence, effort and reliability risk</span></li><li><b>Deliver</b><span>Secure self-service artefacts and acceptance criteria</span></li><li><b>Measure</b><span>Adoption, flow, reliability and user outcomes</span></li></ol></article>
+            <article class="surface"><h3>Now / Next / Later</h3><div class="roadmap"><div><span>NOW</span><strong>Secure service golden path</strong><small>Reduce setup time and configuration drift</small></div><div><span>NEXT</span><strong>Faster pipeline feedback</strong><small>Improve developer flow and failure diagnosis</small></div><div><span>LATER</span><strong>Ownership intelligence</strong><small>Predict stale or unsupported services</small></div></div></article>
           </div>
         </section>
 
         <section class="tab-panel" id="panel-discovery" role="tabpanel" aria-labelledby="tab-discovery" data-panel="discovery" hidden>
-          <div class="control-row">
-            <label for="persona">Developer persona</label>
-            <select id="persona">
-              <option value="new">New backend engineer</option>
-              <option value="owner">Experienced service owner</option>
-              <option value="platform">Platform / SRE engineer</option>
-            </select>
-          </div>
+          <div class="control-row"><label for="persona">Developer persona</label><select id="persona"><option value="new">New backend engineer</option><option value="owner">Experienced service owner</option><option value="platform">Platform / SRE engineer</option></select></div>
           <div class="metric-grid" id="persona-metrics" aria-live="polite"></div>
           <div class="two-column">
-            <article class="surface">
-              <h3>Highest-friction journey stage</h3>
-              <div class="bar-chart" id="journey-bars" aria-label="Developer journey friction chart"></div>
-            </article>
-            <article class="surface insight-card">
-              <span class="status-pill">Product insight</span>
-              <h3 id="persona-insight-title">Repository and service setup</h3>
-              <p id="persona-insight-text">Developers repeatedly rebuild ownership, CI and deployment configuration before they can deliver customer value.</p>
-              <blockquote id="persona-quote">“I know what service I want to build; the slow part is finding the supported setup.”</blockquote>
-            </article>
+            <article class="surface"><h3>Highest-friction journey stage</h3><div class="bar-chart" id="journey-bars" aria-label="Developer journey friction chart"></div></article>
+            <article class="surface insight-card"><span class="status-pill">Product insight</span><h3 id="persona-insight-title">Repository and service setup</h3><p id="persona-insight-text">Developers repeatedly rebuild ownership, CI and deployment configuration before they can deliver customer value.</p><blockquote id="persona-quote">“I know what service I want to build; the slow part is finding the supported setup.”</blockquote></article>
           </div>
         </section>
 
         <section class="tab-panel" id="panel-golden" role="tabpanel" aria-labelledby="tab-golden" data-panel="golden" hidden>
           <div class="two-column generator-grid">
-            <form class="surface" id="manifest-form">
-              <h3>Generate a service manifest</h3>
-              <label for="service-name">Service name</label>
-              <input id="service-name" name="service-name" value="catalog-insights-api" maxlength="63" pattern="[a-z0-9-]+" required>
-              <label for="team-name">Owning team</label>
-              <input id="team-name" name="team-name" value="marketplace-platform" maxlength="64" required>
-              <label for="environment">Environment</label>
-              <select id="environment" name="environment"><option>development</option><option>staging</option><option>production</option></select>
-              <label for="slo">Availability SLO</label>
-              <input id="slo" name="slo" type="range" min="99" max="99.99" step="0.01" value="99.9">
-              <output id="slo-output" for="slo">99.90%</output>
-              <button class="button primary full" type="submit">Generate and download manifest</button>
-              <p class="form-note" id="manifest-status" aria-live="polite">No information is sent to a server.</p>
-            </form>
-            <article class="surface code-card">
-              <div class="code-header"><span>service-catalog.yaml</span><span class="status-pill secure">Secure default</span></div>
-              <pre><code id="manifest-preview"></code></pre>
-              <div class="control-summary">
-                <span>Non-root container</span><span>Read-only filesystem</span><span>SLO metadata</span><span>Least privilege</span>
-              </div>
-            </article>
+            <form class="surface" id="manifest-form"><h3>Generate a service manifest</h3><label for="service-name">Service name</label><input id="service-name" name="service-name" value="catalog-insights-api" maxlength="63" required><label for="team-name">Owning team</label><input id="team-name" name="team-name" value="marketplace-platform" maxlength="64" required><label for="environment">Environment</label><select id="environment" name="environment"><option>development</option><option>staging</option><option>production</option></select><label for="slo">Availability SLO</label><input id="slo" name="slo" type="range" min="99" max="99.99" step="0.01" value="99.9"><output id="slo-output" for="slo">99.90%</output><button class="button primary full" type="submit">Generate and download manifest</button><p class="form-note" id="manifest-status" aria-live="polite">No information is sent to a server.</p></form>
+            <article class="surface code-card"><div class="code-header"><span>service-catalog.yaml</span><span class="status-pill secure">Secure default</span></div><pre><code id="manifest-preview"></code></pre><div class="control-summary"><span>Non-root container</span><span>Read-only filesystem</span><span>SLO metadata</span><span>Least privilege</span></div></article>
           </div>
         </section>
 
         <section class="tab-panel" id="panel-experiment" role="tabpanel" aria-labelledby="tab-experiment" data-panel="experiment" hidden>
           <div class="experiment-layout">
-            <form class="surface experiment-controls" id="experiment-form">
-              <h3>A/B onboarding experiment</h3>
-              <div class="range-group">
-                <label for="control-rate">Control completion rate <output id="control-output">54%</output></label>
-                <input id="control-rate" type="range" min="5" max="95" value="54">
-              </div>
-              <div class="range-group">
-                <label for="treatment-rate">Golden-path completion rate <output id="treatment-output">72%</output></label>
-                <input id="treatment-rate" type="range" min="5" max="95" value="72">
-              </div>
-              <div class="range-group">
-                <label for="sample-size">Engineers per variant <output id="sample-output">240</output></label>
-                <input id="sample-size" type="range" min="30" max="1000" step="10" value="240">
-              </div>
-            </form>
-            <article class="surface experiment-result" aria-live="polite">
-              <div class="variant-bars">
-                <div><span>Control</span><i id="control-bar"></i><strong id="control-result">54%</strong></div>
-                <div><span>Golden path</span><i id="treatment-bar"></i><strong id="treatment-result">72%</strong></div>
-              </div>
-              <div class="result-grid">
-                <div><span>Absolute uplift</span><strong id="absolute-uplift">18.0 pts</strong></div>
-                <div><span>Relative uplift</span><strong id="relative-uplift">33.3%</strong></div>
-                <div><span>Approx. p-value</span><strong id="p-value">0.0001</strong></div>
-              </div>
-              <div class="decision-banner" id="experiment-decision">Ship progressively with monitoring and rollback guardrails.</div>
-            </article>
+            <form class="surface experiment-controls" id="experiment-form"><h3>A/B onboarding experiment</h3><div class="range-group"><label for="control-rate">Control completion rate <output id="control-output">54%</output></label><input id="control-rate" type="range" min="5" max="95" value="54"></div><div class="range-group"><label for="treatment-rate">Golden-path completion rate <output id="treatment-output">72%</output></label><input id="treatment-rate" type="range" min="5" max="95" value="72"></div><div class="range-group"><label for="sample-size">Engineers per variant <output id="sample-output">240</output></label><input id="sample-size" type="range" min="30" max="1000" step="10" value="240"></div></form>
+            <article class="surface experiment-result" aria-live="polite"><div class="variant-bars"><div><span>Control</span><progress id="control-bar" max="100" value="54" aria-label="Control completion rate"></progress><strong id="control-result">54%</strong></div><div><span>Golden path</span><progress id="treatment-bar" max="100" value="72" aria-label="Golden-path completion rate"></progress><strong id="treatment-result">72%</strong></div></div><div class="result-grid"><div><span>Absolute uplift</span><strong id="absolute-uplift">18.0 pts</strong></div><div><span>Relative uplift</span><strong id="relative-uplift">33.3%</strong></div><div><span>Approx. p-value</span><strong id="p-value">0.0001</strong></div></div><div class="decision-banner" id="experiment-decision">Ship progressively with monitoring and rollback guardrails.</div></article>
           </div>
         </section>
 
         <section class="tab-panel" id="panel-governance" role="tabpanel" aria-labelledby="tab-governance" data-panel="governance" hidden>
           <div class="governance-layout">
-            <article class="surface governance-score">
-              <span>Governance readiness</span>
-              <strong id="governance-score">50</strong>
-              <small>/ 100</small>
-              <div class="score-ring" id="score-ring" aria-hidden="true"></div>
-              <p id="governance-message">Complete the controls to improve readiness.</p>
-            </article>
-            <fieldset class="surface checklist" id="governance-controls">
-              <legend>AI enablement control checklist</legend>
-              <label><input type="checkbox" checked> Named business and technical owner</label>
-              <label><input type="checkbox" checked> Data classification and residency reviewed</label>
-              <label><input type="checkbox"> Human override and escalation defined</label>
-              <label><input type="checkbox"> Access controls and audit logs verified</label>
-              <label><input type="checkbox"> Model/vendor risk assessment completed</label>
-              <label><input type="checkbox"> Monitoring, incident response and rollback tested</label>
-            </fieldset>
-          </div>
-          <p class="governance-note">Demonstration only: this checklist supports transparent product decisions and does not constitute legal or compliance advice.</p>
+            <article class="surface governance-score"><span>Governance readiness</span><strong id="governance-score">50</strong><small>/ 100</small><progress class="score-ring" id="score-ring" max="100" value="50" aria-label="Governance readiness 50 out of 100"></progress><p id="governance-message">Complete the controls to improve readiness.</p></article>
+            <fieldset class="surface checklist" id="governance-controls"><legend>AI enablement control checklist</legend><label><input type="checkbox" checked> Named business and technical owner</label><label><input type="checkbox" checked> Data classification and residency reviewed</label><label><input type="checkbox"> Human override and escalation defined</label><label><input type="checkbox"> Access controls and audit logs verified</label><label><input type="checkbox"> Model/vendor risk assessment completed</label><label><input type="checkbox"> Monitoring, incident response and rollback tested</label></fieldset>
+          </div><p class="governance-note">Demonstration only: this checklist supports transparent product decisions and does not constitute legal or compliance advice.</p>
         </section>
       </div>
     </section>
 
-    <section class="architecture-section" id="architecture">
-      <div class="section-heading">
-        <div><div class="eyebrow">Technical product architecture</div><h2>Visible outcomes, testable controls</h2></div>
-        <p>The full Python application generates downloadable starter services and evaluates synthetic platform evidence without external APIs or secrets.</p>
-      </div>
-      <div class="architecture-flow" aria-label="PlatformPulse architecture">
-        <article><span>01</span><strong>Evidence layer</strong><p>Survey, feedback, service, pipeline and experiment datasets</p></article>
-        <i aria-hidden="true">→</i>
-        <article><span>02</span><strong>Product logic</strong><p>Metrics, prioritisation, experimentation, reliability and governance</p></article>
-        <i aria-hidden="true">→</i>
-        <article><span>03</span><strong>Interactive experience</strong><p>Streamlit UI, decisions, charts, filters and downloadable artefacts</p></article>
-      </div>
-    </section>
+    <section class="architecture-section" id="architecture"><div class="section-heading"><div><div class="eyebrow">Technical product architecture</div><h2>Visible outcomes, testable controls</h2></div><p>The full Python application generates downloadable starter services and evaluates synthetic platform evidence without external APIs or secrets.</p></div><div class="architecture-flow" aria-label="PlatformPulse architecture"><article><span>01</span><strong>Evidence layer</strong><p>Survey, feedback, service, pipeline and experiment datasets</p></article><i aria-hidden="true">→</i><article><span>02</span><strong>Product logic</strong><p>Metrics, prioritisation, experimentation, reliability and governance</p></article><i aria-hidden="true">→</i><article><span>03</span><strong>Interactive experience</strong><p>Streamlit UI, decisions, charts, filters and downloadable artefacts</p></article></div></section>
 
-    <section class="quality-section" id="quality">
-      <div class="quality-copy">
-        <div class="eyebrow">Quality, security and responsible AI</div>
-        <h2>Built to be safely shareable.</h2>
-        <p>The repository is public, uses synthetic data, requires no secrets and includes automated tests, dependency scanning, static security analysis and hardened deployment artefacts.</p>
-        <a class="button secondary light" href="https://github.com/Samadritaacharya/platformpulse-developer-platform/blob/main/docs/QA_SECURITY_REPORT.md" rel="noreferrer">Read QA & security report</a>
-      </div>
-      <div class="quality-grid">
-        <article><strong>CI</strong><span>Unit + UI tests and compilation</span></article>
-        <article><strong>SAST</strong><span>Bandit static security analysis</span></article>
-        <article><strong>SCA</strong><span>pip-audit dependency scanning</span></article>
-        <article><strong>Privacy</strong><span>Synthetic data and no external AI calls</span></article>
-      </div>
-    </section>
+    <section class="quality-section" id="quality"><div class="quality-copy"><div class="eyebrow">Quality, security and responsible AI</div><h2>Built to be safely shareable.</h2><p>The repository is public, uses synthetic data, requires no secrets and includes automated tests, dependency scanning, static security analysis and hardened deployment artefacts.</p><a class="button secondary light" href="https://github.com/Samadritaacharya/platformpulse-developer-platform/blob/main/docs/QA_SECURITY_REPORT.md" rel="noreferrer">Read QA & security report</a></div><div class="quality-grid"><article><strong>CI</strong><span>Unit + UI tests and compilation</span></article><article><strong>SAST</strong><span>Bandit static security analysis</span></article><article><strong>SCA</strong><span>pip-audit dependency scanning</span></article><article><strong>Privacy</strong><span>Synthetic data and no external AI calls</span></article></div></section>
 
-    <section class="cta-section">
-      <div>
-        <div class="eyebrow">Explore the full implementation</div>
-        <h2>See the product thinking and the working code.</h2>
-        <p>The repository includes the complete Streamlit application, secure service generator, demo data, product documentation, automated tests and deployment instructions.</p>
-      </div>
-      <div class="cta-actions">
-        <a class="button primary" href="https://github.com/Samadritaacharya/platformpulse-developer-platform" rel="noreferrer">Open GitHub repository</a>
-        <a class="button secondary" href="https://share.streamlit.io/" rel="noreferrer">Deploy full live app</a>
-      </div>
-    </section>
+    <section class="cta-section"><div><div class="eyebrow">Explore the full implementation</div><h2>See the product thinking and the working code.</h2><p>The repository includes the complete Streamlit application, secure service generator, demo data, product documentation, automated tests and deployment instructions.</p></div><div class="cta-actions"><a class="button primary" href="https://github.com/Samadritaacharya/platformpulse-developer-platform" rel="noreferrer">Open GitHub repository</a><a class="button secondary" href="https://share.streamlit.io/" rel="noreferrer">Deploy full live app</a></div></section>
   </main>
 
-  <footer>
-    <div><strong>PlatformPulse</strong><span>Independent portfolio project by Samadrita Acharya</span></div>
-    <div><a href="https://www.linkedin.com/in/samadrita-acharya-a07266184/" rel="noreferrer">LinkedIn</a><a href="https://github.com/Samadritaacharya" rel="noreferrer">GitHub</a><span id="year"></span></div>
-  </footer>
+  <footer><div><strong>PlatformPulse</strong><span>Independent portfolio project by Samadrita Acharya</span></div><div><a href="https://www.linkedin.com/in/samadrita-acharya-a07266184/" rel="noreferrer">LinkedIn</a><a href="https://github.com/Samadritaacharya" rel="noreferrer">GitHub</a><span id="year"></span></div></footer>
 </body>
 </html>

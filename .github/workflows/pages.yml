@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - "site/**"
+      - "scripts/site_e2e.py"
       - ".github/workflows/pages.yml"
   pull_request:
     paths:
       - "site/**"
+      - "scripts/site_e2e.py"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -22,17 +24,19 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Validate JavaScript syntax
         run: node --check site/app.js
 
-      - name: Validate static site references
+      - name: Validate static site references and CSP structure
         run: |
           test -f site/index.html
           test -f site/styles.css
+          test -f site/progress.css
           test -f site/app.js
           python - <<'PY'
           from html.parser import HTMLParser
@@ -42,9 +46,15 @@ jobs:
               def __init__(self):
                   super().__init__()
                   self.local_refs = []
+                  self.inline_styles = []
+                  self.inline_scripts = 0
 
               def handle_starttag(self, tag, attrs):
                   values = dict(attrs)
+                  if "style" in values:
+                      self.inline_styles.append((tag, values["style"]))
+                  if tag == "script" and not values.get("src"):
+                      self.inline_scripts += 1
                   for key in ("href", "src"):
                       value = values.get(key, "")
                       if value and not value.startswith(("http://", "https://", "#", "mailto:", "data:")):
@@ -56,31 +66,107 @@ jobs:
           missing = sorted({ref for ref in parser.local_refs if ref and not (root / ref).exists()})
           if missing:
               raise SystemExit(f"Missing local assets: {missing}")
-          print("Static site references validated.")
+          if parser.inline_styles:
+              raise SystemExit(f"Inline styles violate the strict CSP: {parser.inline_styles}")
+          if parser.inline_scripts:
+              raise SystemExit("Inline scripts violate the strict CSP")
+          print("Static site references and CSP structure validated.")
           PY
+
+  browser-e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up Python
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: "3.11"
+      - name: Install browser test dependency
+        run: |
+          python -m pip install --upgrade pip --quiet
+          python -m pip install selenium==4.35.0 --quiet
+          google-chrome --version
+      - name: Exercise the complete visual site in Chrome
+        id: visual_test
+        continue-on-error: true
+        run: |
+          python -m http.server 8080 --directory site > site-http.log 2>&1 &
+          SERVER_PID=$!
+          echo $SERVER_PID > site-http.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8080/ > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          python -m scripts.site_e2e > site-e2e-output.txt 2>&1
+      - name: Stop server and capture logs
+        if: always()
+        run: |
+          if [ -f site-http.pid ]; then kill $(cat site-http.pid) || true; fi
+          cat site-e2e-output.txt 2>/dev/null || true
+          cat site-http.log 2>/dev/null || true
+      - name: Upload visual-site diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: visual-site-e2e-diagnostics
+          path: |
+            site-e2e-output.txt
+            site-http.log
+            site-e2e-success.png
+            site-e2e-failure.png
+          if-no-files-found: ignore
+      - name: Enforce visual-site browser test
+        if: steps.visual_test.outcome == 'failure'
+        run: exit 1
 
   build:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    needs: validate
+    timeout-minutes: 10
+    needs: [validate, browser-e2e]
+    outputs:
+      pages_ready: ${{ steps.pages_state.outputs.ready }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        id: configure
+        continue-on-error: true
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+
+      - name: Record Pages readiness
+        id: pages_state
+        shell: bash
+        run: |
+          if [ "${{ steps.configure.outcome }}" = "success" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+            echo "## GitHub Pages is configured" >> "$GITHUB_STEP_SUMMARY"
+            echo "The validated site will be packaged and deployed." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo "## Deployment skipped: one-time Pages setting required" >> "$GITHUB_STEP_SUMMARY"
+            echo "The website and browser tests passed, but GitHub Pages is not enabled for this repository." >> "$GITHUB_STEP_SUMMARY"
+            echo "Open **Settings → Pages → Build and deployment → Source: GitHub Actions**, then rerun this workflow." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        if: steps.pages_state.outputs.ready == 'true'
+        uses: actions/upload-pages-artifact@98ef48e41587a300b82de4cf298aa98b57b2faae
         with:
           path: site
 
   deploy:
-    if: github.event_name != 'pull_request'
+    if: needs.build.outputs.pages_ready == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     needs: build
     permissions:
       pages: write
@@ -88,4 +174,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128

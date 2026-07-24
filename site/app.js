@@ -114,14 +114,14 @@ function renderPersona(key) {
     row.className = "bar-row";
     const name = document.createElement("span");
     name.textContent = label;
-    const track = document.createElement("div");
-    track.className = "bar-track";
-    const fill = document.createElement("i");
-    fill.style.width = `${value}%`;
-    track.append(fill);
+    const progress = document.createElement("progress");
+    progress.className = "bar-progress";
+    progress.max = 100;
+    progress.value = value;
+    progress.setAttribute("aria-label", `${label} friction ${value} out of 100`);
     const score = document.createElement("strong");
     score.textContent = String(value);
-    row.append(name, track, score);
+    row.append(name, progress, score);
     bars.append(row);
   });
 
@@ -219,8 +219,8 @@ function updateExperiment() {
   document.getElementById("sample-output").textContent = String(sample);
   document.getElementById("control-result").textContent = `${control}%`;
   document.getElementById("treatment-result").textContent = `${treatment}%`;
-  document.getElementById("control-bar").style.width = `${control}%`;
-  document.getElementById("treatment-bar").style.width = `${treatment}%`;
+  document.getElementById("control-bar").value = control;
+  document.getElementById("treatment-bar").value = treatment;
   document.getElementById("absolute-uplift").textContent = `${absolute.toFixed(1)} pts`;
   document.getElementById("relative-uplift").textContent = `${relative.toFixed(1)}%`;
   document.getElementById("p-value").textContent = pValue < 0.0001 ? "<0.0001" : pValue.toFixed(4);
@@ -244,7 +244,9 @@ function updateGovernance() {
   const checked = controls.filter((control) => control.checked).length;
   const score = Math.round((checked / controls.length) * 100);
   document.getElementById("governance-score").textContent = String(score);
-  document.getElementById("score-ring").style.background = `conic-gradient(var(--primary-2) ${score}%, rgba(255,255,255,.06) 0)`;
+  const progress = document.getElementById("score-ring");
+  progress.value = score;
+  progress.setAttribute("aria-label", `Governance readiness ${score} out of 100`);
   let message = "Critical governance controls remain incomplete.";
   if (score >= 50) message = "Core ownership exists; complete operational controls before broad rollout.";
   if (score >= 84) message = "Strong readiness: validate evidence, approvals and continuous monitoring.";
