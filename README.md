@@ -1,8 +1,8 @@
 # PlatformPulse — Developer Experience & Internal Platform Product Lab
 
 [![PlatformPulse CI](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/ci.yml)
-[![Security](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/security.yml/badge.svg)](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/security.yml)
-[![Visual Site](https://img.shields.io/badge/Visual%20Site-GitHub%20Pages-40d7c7)](https://samadritaacharya.github.io/platformpulse-developer-platform/)
+[![Visual Site](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/pages.yml/badge.svg)](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/pages.yml)
+[![Security Gates](https://img.shields.io/badge/security-Bandit%20%2B%20pip--audit-2ea44f)](docs/QA_SECURITY_REPORT.md)
 
 PlatformPulse is an independent, end-to-end Developer Platform product prototype. It connects developer discovery, a secure self-service golden path, service ownership, CI/CD and SLO metrics, A/B experimentation, AI governance, feedback prioritisation and an evidence-based product roadmap.
 
@@ -14,7 +14,7 @@ PlatformPulse is an independent, end-to-end Developer Platform product prototype
 - **Complete interactive application:** deploy `app.py` free on Streamlit Community Cloud using the steps in [DEPLOYMENT.md](DEPLOYMENT.md).
 - **Source, tests and product documentation:** this repository.
 
-The GitHub Pages website is a recruiter-friendly visual front door. The Streamlit application is the complete product experience with all nine views and downloadable artefacts.
+The GitHub Pages website is a recruiter-friendly visual front door. The Streamlit application is the complete product experience with all nine views and downloadable artefacts. If the Pages URL is not live yet, enable **Settings → Pages → Source: GitHub Actions** once and rerun the Visual Site workflow.
 
 ## Recruiter quick view
 
@@ -67,7 +67,7 @@ The governance view evaluates synthetic AI use cases across data classification,
 
 ## Technology
 
-`Python` · `Streamlit` · `Pandas` · `Plotly` · `PyYAML` · `pytest` · `GitHub Actions` · `Docker` · `Kubernetes` · `Helm`
+`Python` · `Streamlit` · `Pandas` · `Plotly` · `PyYAML` · `pytest` · `Selenium` · `GitHub Actions` · `Docker` · `Kubernetes` · `Helm`
 
 ## Run locally
 
@@ -102,15 +102,16 @@ Open `http://localhost:8501`.
 
 ## Automated quality gates
 
-The CI pipeline validates:
+The workflows validate:
 
-- all unit and Streamlit UI tests;
-- Python compilation;
-- Bandit static security analysis;
-- pip-audit dependency scanning;
-- Streamlit live health check;
-- generated FastAPI tests;
-- generated Docker build and live health check.
+- all unit tests and Python compilation;
+- every Streamlit view in a real Chrome browser;
+- Golden Path ZIP generation, archive contents and generated-service tests;
+- Streamlit and generated-container live health checks;
+- Bandit static security analysis and pip-audit dependency scanning;
+- visual-site JavaScript syntax and local asset references;
+- strict Content Security Policy compatibility with no severe browser-console errors;
+- visual-site tabs, discovery, input sanitisation, download, A/B experiment and AI-governance interactions.
 
 ## Documentation
 
