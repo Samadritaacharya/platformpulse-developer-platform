@@ -1,14 +1,8 @@
 """Streamlit entry point for PlatformPulse."""
 from __future__ import annotations
 
-import importlib
-import sys
+import runpy
 
-MODULE = "platformpulse.ui"
-
-# Streamlit reruns this entry point in the same Python process. Reloading the UI
-# module prevents a cached import from leaving the page blank after interaction.
-if MODULE in sys.modules:
-    importlib.reload(sys.modules[MODULE])
-else:
-    importlib.import_module(MODULE)
+# Streamlit reruns this file in the same process. run_module executes the UI in
+# a fresh namespace on each interaction without reloading native extensions.
+runpy.run_module("platformpulse.ui", run_name="__main__")
