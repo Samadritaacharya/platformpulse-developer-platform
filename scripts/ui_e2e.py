@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import tempfile
 import time
 import zipfile
 
@@ -12,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as conditions
 from selenium.webdriver.support.ui import WebDriverWait
 
-DOWNLOAD_DIR = Path("/tmp/platformpulse-ui-downloads")
+DOWNLOAD_DIR = Path(tempfile.gettempdir()) / "platformpulse-ui-downloads"
 
 
 @dataclass(frozen=True)
