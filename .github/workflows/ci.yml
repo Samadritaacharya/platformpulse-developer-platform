@@ -87,7 +87,7 @@ jobs:
       - run: python -m pip install -r requirements.txt --quiet
       - name: Generate and test secure starter
         run: |
-          python scripts/export_demo_service.py --output generated
+          python -m scripts.export_demo_service --output generated
           python -m venv /tmp/golden-path-venv
           /tmp/golden-path-venv/bin/python -m pip install --upgrade pip --quiet
           /tmp/golden-path-venv/bin/python -m pip install -r generated/demo-secure-api/requirements.txt --quiet
