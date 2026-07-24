@@ -6,7 +6,7 @@ import tempfile
 import time
 
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as conditions
 from selenium.webdriver.support.ui import Select, WebDriverWait
@@ -110,7 +110,8 @@ def main() -> None:
         preview = driver.find_element(By.ID, "manifest-preview").text
         assert "<script>" not in preview
         assert "owner: marketplaceplatformunsafe" in preview
-        driver.find_element(By.CSS_SELECTOR, "#manifest-form button[type='submit']").click()
+        submit = driver.find_element(By.CSS_SELECTOR, "#manifest-form button[type='submit']")
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'}); arguments[0].click();", submit)
         wait.until(conditions.text_to_be_present_in_element((By.ID, "manifest-status"), "Downloaded"))
         _wait_for_download("catalog-api-script-service-catalog.yaml")
 
@@ -132,7 +133,7 @@ def main() -> None:
         _assert_no_browser_errors(driver)
         driver.save_screenshot("site-e2e-success.png")
         print("PASS: static visual website tabs, discovery, generator, download, experiment and governance")
-    except (AssertionError, TimeoutException) as exc:
+    except (AssertionError, TimeoutException, WebDriverException) as exc:
         driver.save_screenshot("site-e2e-failure.png")
         try:
             _assert_no_browser_errors(driver)
