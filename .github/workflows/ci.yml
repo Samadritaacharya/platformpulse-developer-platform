@@ -24,19 +24,32 @@ jobs:
           cache: pip
       - name: Install application and security tools
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-          python -m pip install pip-audit==2.9.0 bandit==1.8.6
+          python -m pip install --upgrade pip --quiet
+          python -m pip install -r requirements.txt --quiet
+          python -m pip install pip-audit==2.9.0 bandit==1.8.6 --quiet
       - name: Dependency consistency
         run: python -m pip check
-      - name: Unit and UI tests
-        run: python -m pytest -q --disable-warnings --maxfail=1
+      - name: Unit tests
+        run: python -m pytest -q --disable-warnings --maxfail=1 --ignore=tests/test_app.py
       - name: Compile application
-        run: python -m compileall app.py platformpulse scripts
+        run: python -m compileall -q app.py platformpulse scripts
       - name: Static security analysis
         run: bandit -q -r app.py platformpulse scripts -x tests -ll
       - name: Dependency vulnerability audit
         run: pip-audit -r requirements.txt --progress-spinner off
+
+  ui-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: python -m pip install -r requirements.txt --quiet
+      - name: Exercise all nine Streamlit views
+        run: python -m pytest tests/test_app.py -vv --tb=short
 
   streamlit-smoke:
     runs-on: ubuntu-latest
@@ -47,7 +60,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: python -m pip install -r requirements.txt
+      - run: python -m pip install -r requirements.txt --quiet
       - name: Start Streamlit and verify health
         run: |
           python -m streamlit run app.py --server.headless true --server.port 8501 > /tmp/platformpulse.log 2>&1 &
@@ -71,14 +84,15 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: python -m pip install -r requirements.txt
+      - run: python -m pip install -r requirements.txt --quiet
       - name: Generate and test secure starter
         run: |
           python scripts/export_demo_service.py --output generated
           python -m venv /tmp/golden-path-venv
-          /tmp/golden-path-venv/bin/python -m pip install --upgrade pip
-          /tmp/golden-path-venv/bin/python -m pip install -r generated/demo-secure-api/requirements.txt
-          /tmp/golden-path-venv/bin/python -m pytest -q generated/demo-secure-api/tests
+          /tmp/golden-path-venv/bin/python -m pip install --upgrade pip --quiet
+          /tmp/golden-path-venv/bin/python -m pip install -r generated/demo-secure-api/requirements.txt --quiet
+          cd generated/demo-secure-api
+          /tmp/golden-path-venv/bin/python -m pytest -q tests
       - name: Build and run generated container
         run: |
           docker build -t platformpulse-generated:ci generated/demo-secure-api
