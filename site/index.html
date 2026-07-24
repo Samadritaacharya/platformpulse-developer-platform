@@ -182,8 +182,8 @@
             </form>
             <article class="surface experiment-result" aria-live="polite">
               <div class="variant-bars">
-                <div><span>Control</span><i id="control-bar"></i><strong id="control-result">54%</strong></div>
-                <div><span>Golden path</span><i id="treatment-bar"></i><strong id="treatment-result">72%</strong></div>
+                <div><span>Control</span><progress id="control-bar" max="100" value="54" aria-label="Control completion rate"></progress><strong id="control-result">54%</strong></div>
+                <div><span>Golden path</span><progress id="treatment-bar" max="100" value="72" aria-label="Golden-path completion rate"></progress><strong id="treatment-result">72%</strong></div>
               </div>
               <div class="result-grid">
                 <div><span>Absolute uplift</span><strong id="absolute-uplift">18.0 pts</strong></div>
@@ -201,7 +201,7 @@
               <span>Governance readiness</span>
               <strong id="governance-score">50</strong>
               <small>/ 100</small>
-              <div class="score-ring" id="score-ring" aria-hidden="true"></div>
+              <progress class="score-ring" id="score-ring" max="100" value="50" aria-label="Governance readiness 50 out of 100"></progress>
               <p id="governance-message">Complete the controls to improve readiness.</p>
             </article>
             <fieldset class="surface checklist" id="governance-controls">
