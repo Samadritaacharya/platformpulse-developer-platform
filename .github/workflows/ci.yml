@@ -30,7 +30,7 @@ jobs:
       - name: Dependency consistency
         run: python -m pip check
       - name: Unit tests
-        run: python -m pytest -q --disable-warnings --maxfail=1 --ignore=tests/test_app.py
+        run: python -m pytest -q --disable-warnings --maxfail=1
       - name: Compile application
         run: python -m compileall -q app.py platformpulse scripts
       - name: Static security analysis
@@ -53,29 +53,37 @@ jobs:
 
   ui-navigation:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
         with:
           python-version: "3.11"
           cache: pip
-      - run: python -m pip install -r requirements.txt --quiet
-      - name: Exercise all nine Streamlit views
-        id: ui_test
-        continue-on-error: true
-        run: python -m pytest tests/test_app.py -vv --tb=short > ui-test-output.txt 2>&1
-      - name: Upload UI diagnostics
-        if: always()
+      - name: Install application and browser test dependency
+        run: |
+          python -m pip install -r requirements.txt --quiet
+          python -m pip install selenium==4.35.0 --quiet
+          google-chrome --version
+      - name: Exercise all nine Streamlit views in Chrome
+        run: |
+          python -m streamlit run app.py --server.headless true --server.port 8501 > /tmp/platformpulse-ui.log 2>&1 &
+          APP_PID=$!
+          trap 'cat /tmp/platformpulse-ui.log; kill $APP_PID || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8501/_stcore/health | grep -q ok; then
+              break
+            fi
+            sleep 1
+          done
+          python -m scripts.ui_e2e
+      - name: Upload browser failure screenshot
+        if: failure()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ui-test-output
-          path: ui-test-output.txt
-      - name: Enforce UI test
-        if: steps.ui_test.outcome == 'failure'
-        run: |
-          cat ui-test-output.txt
-          exit 1
+          name: ui-e2e-failure
+          path: ui-e2e-failure.png
+          if-no-files-found: ignore
 
   streamlit-smoke:
     runs-on: ubuntu-latest
