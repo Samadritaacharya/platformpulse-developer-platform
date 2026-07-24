@@ -55,6 +55,15 @@ def _set_range(driver: webdriver.Chrome, element_id: str, value: int) -> None:
     )
 
 
+def _set_text(driver: webdriver.Chrome, element_id: str, value: str) -> None:
+    element = driver.find_element(By.ID, element_id)
+    driver.execute_script(
+        "arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', {bubbles:true}));",
+        element,
+        value,
+    )
+
+
 def _wait_for_download(filename: str) -> Path:
     deadline = time.monotonic() + 15
     expected = DOWNLOAD_DIR / filename
@@ -96,20 +105,14 @@ def main() -> None:
         assert journey_values == [54, 65, 78, 84, 71]
 
         _click_tab(driver, wait, "tab-golden", "panel-golden")
-        service = driver.find_element(By.ID, "service-name")
-        team = driver.find_element(By.ID, "team-name")
-        service.clear()
-        service.send_keys("catalog_api<script>")
-        team.clear()
-        team.send_keys("marketplace:platform\nunsafe")
-        driver.execute_script("arguments[0].dispatchEvent(new Event('input', {bubbles:true}));", service)
-        driver.execute_script("arguments[0].dispatchEvent(new Event('input', {bubbles:true}));", team)
+        _set_text(driver, "service-name", "catalog_api<script>")
+        _set_text(driver, "team-name", "marketplace:platform/unsafe")
         preview = driver.find_element(By.ID, "manifest-preview").text
         assert "<script>" not in preview
         assert "owner: marketplaceplatformunsafe" in preview
         driver.find_element(By.CSS_SELECTOR, "#manifest-form button[type='submit']").click()
         wait.until(conditions.text_to_be_present_in_element((By.ID, "manifest-status"), "Downloaded"))
-        _wait_for_download("catalog-apiscript-service-catalog.yaml")
+        _wait_for_download("catalog-api-script-service-catalog.yaml")
 
         _click_tab(driver, wait, "tab-experiment", "panel-experiment")
         _set_range(driver, "control-rate", 45)
