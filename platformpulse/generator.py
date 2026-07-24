@@ -16,6 +16,12 @@ _ALLOWED_VISIBILITY: Final = {"internal", "private", "public"}
 _ALLOWED_DATABASES: Final = {"None", "PostgreSQL", "MySQL", "Redis"}
 _ALLOWED_ENVIRONMENTS: Final = {"development", "staging", "production"}
 _SAFE_TEXT = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 ._/-]{0,79}$")
+_GENERATED_REQUIREMENTS: Final = """fastapi==0.139.2
+starlette==1.3.1
+uvicorn==0.35.0
+pytest==9.0.3
+httpx==0.28.1
+"""
 
 
 @dataclass(frozen=True)
@@ -79,7 +85,12 @@ def _files(config: ServiceConfig) -> dict[str, str]:
             "environment": config.environment,
             "database": config.database,
             "slo": {"availabilityTarget": float(config.slo_target)},
-            "security": {"runAsNonRoot": True, "readOnlyRootFilesystem": True, "leastPrivilege": True, "auditLogging": True},
+            "security": {
+                "runAsNonRoot": True,
+                "readOnlyRootFilesystem": True,
+                "leastPrivilege": True,
+                "auditLogging": True,
+            },
             "links": {
                 "repository": f"https://github.com/example/{name}",
                 "documentation": f"https://docs.example.internal/services/{name}",
@@ -107,12 +118,15 @@ def root() -> dict[str, str]:
 '''
     test_py = f'''from fastapi.testclient import TestClient
 from app.main import app
+
 client = TestClient(app)
+
 
 def test_health() -> None:
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json() == {{"status": "ok", "service": {_python_literal(name)}}}
+
 
 def test_readiness() -> None:
     response = client.get("/ready")
@@ -210,7 +224,7 @@ spec:
         RUN groupadd --system --gid 10001 appgroup && useradd --system --uid 10001 --gid appgroup --create-home appuser
         WORKDIR /app
         COPY requirements.txt .
-        RUN python -m pip install --no-cache-dir -r requirements.txt
+        RUN python -m pip install --no-cache-dir -r requirements.txt && python -m pip check
         COPY --chown=appuser:appgroup . .
         USER 10001:10001
         EXPOSE 8000
@@ -249,7 +263,7 @@ Before production, replace example URLs, pin images by digest, add endpoint auth
         f"{name}/app/__init__.py": "",
         f"{name}/app/main.py": main_py,
         f"{name}/tests/test_health.py": test_py,
-        f"{name}/requirements.txt": "fastapi==0.116.1\nuvicorn==0.35.0\npytest==8.4.2\nhttpx==0.28.1\n",
+        f"{name}/requirements.txt": _GENERATED_REQUIREMENTS,
         f"{name}/Dockerfile": dockerfile,
         f"{name}/docker-compose.yml": compose,
         f"{name}/.dockerignore": ".git\n.venv\n__pycache__\n.pytest_cache\n.env\n",
