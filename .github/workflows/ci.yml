@@ -132,10 +132,16 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: python -m pip install -r requirements.txt --quiet
-      - name: Generate and test secure starter
+      - name: Install application and audit tool
+        run: |
+          python -m pip install -r requirements.txt --quiet
+          python -m pip install pip-audit==2.9.0 --quiet
+      - name: Generate and audit secure starter
         run: |
           python -m scripts.export_demo_service --output generated
+          pip-audit -r generated/demo-secure-api/requirements.txt --progress-spinner off
+      - name: Test generated service
+        run: |
           python -m venv /tmp/golden-path-venv
           /tmp/golden-path-venv/bin/python -m pip install --upgrade pip --quiet
           /tmp/golden-path-venv/bin/python -m pip install -r generated/demo-secure-api/requirements.txt --quiet
