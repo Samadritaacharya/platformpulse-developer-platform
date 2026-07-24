@@ -1,0 +1,8 @@
+service_name,team,repository,language,environment,documentation,last_deployment,pipeline_status,slo_target,slo_actual,open_incidents,runbook,created_via_golden_path
+catalog-api,marketplace-platform,https://github.com/example/catalog-api,Python,production,https://docs.example/catalog-api,2026-07-21,passing,99.9,99.94,0,https://runbooks.example/catalog-api,1
+pricing-events,commerce-foundation,https://github.com/example/pricing-events,Java,production,https://docs.example/pricing-events,2026-07-20,passing,99.9,99.87,1,https://runbooks.example/pricing-events,1
+seller-onboarding,,https://github.com/example/seller-onboarding,TypeScript,production,,2026-05-11,failing,99.5,98.90,2,,0
+search-indexer,search-platform,https://github.com/example/search-indexer,Python,production,https://docs.example/search-indexer,2026-07-18,passing,99.9,99.91,0,https://runbooks.example/search-indexer,1
+checkout-orchestrator,checkout-platform,https://github.com/example/checkout-orchestrator,Go,production,https://docs.example/checkout-orchestrator,2026-07-22,failing,99.95,99.72,1,https://runbooks.example/checkout-orchestrator,0
+inventory-sync,supply-platform,https://github.com/example/inventory-sync,Java,staging,https://docs.example/inventory-sync,2026-06-02,passing,99.5,99.66,0,,0
+developer-portal,developer-experience,https://github.com/example/developer-portal,TypeScript,production,https://docs.example/developer-portal,2026-07-23,passing,99.9,99.98,0,https://runbooks.example/developer-portal,1

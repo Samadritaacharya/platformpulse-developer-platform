@@ -1,0 +1,6 @@
+id,persona,journey_stage,problem,evidence_count,reach,impact,confidence,effort,strategic_alignment,reliability_risk,status
+OPP-001,New Backend Engineer,Create service,Manual service setup and inconsistent starter repositories increase onboarding time,8,120,4.8,90,8,5,4,Validated
+OPP-002,Platform/SRE Engineer,Build and test,Repeated CI patterns and unclear failure messages create avoidable support demand,7,180,4.1,85,10,5,5,Validated
+OPP-003,Experienced Service Owner,Service ownership,Missing ownership documentation SLO and runbook metadata reduce operability,6,220,3.7,90,6,4,5,Validated
+OPP-004,Experienced Service Owner,Monitor,Delivery and reliability signals are fragmented across multiple views,5,150,3.5,75,9,4,5,Discovery
+OPP-005,New Backend Engineer,Documentation,Engineers cannot quickly identify the current supported documentation,5,200,3.0,80,5,4,3,Discovery

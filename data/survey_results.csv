@@ -1,0 +1,15 @@
+respondent_id,persona,journey_stage,friction_score,frequency,minutes_lost,comment,source_type
+D01,New Backend Engineer,Access,4,4,55,Access requests are spread across several places and ownership is unclear,Synthetic
+D01,New Backend Engineer,Create service,5,4,90,I copy files from older repositories because I cannot find one supported starter,Synthetic
+D01,New Backend Engineer,Deploy,5,5,120,The first deployment needs manual configuration and several clarification messages,Synthetic
+D02,New Backend Engineer,Documentation,4,5,70,Documentation exists but I do not know which page is current,Synthetic
+D02,New Backend Engineer,Build and test,3,4,45,Pipeline errors are difficult to interpret during onboarding,Synthetic
+D03,Experienced Service Owner,Deploy,4,4,65,Deployment configuration differs across services and creates review delays,Synthetic
+D03,Experienced Service Owner,Monitor,4,5,80,I need to combine multiple views to understand whether a release is healthy,Synthetic
+D04,Experienced Service Owner,Incident response,4,3,75,Runbook ownership is incomplete and escalation paths vary,Synthetic
+D05,Platform/SRE Engineer,Create service,4,5,85,Teams repeatedly ask for the same repository and CI setup support,Synthetic
+D05,Platform/SRE Engineer,Build and test,5,5,110,Repeated pipeline patterns create avoidable support demand,Synthetic
+D06,Platform/SRE Engineer,Service ownership,4,4,60,Some services have no clear owner or SLO metadata,Synthetic
+D06,Platform/SRE Engineer,Monitor,3,4,45,Health signals are available but not consistently linked to an accountable action,Synthetic
+D07,New Backend Engineer,Create service,5,4,95,A golden path would reduce uncertainty and help me learn the expected standards,Synthetic
+D08,Experienced Service Owner,Documentation,3,3,35,Service pages need a consistent minimum information standard,Synthetic
