@@ -1,10 +1,20 @@
 # PlatformPulse — Developer Experience & Internal Platform Product Lab
 
 [![PlatformPulse CI](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/ci.yml/badge.svg)](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/ci.yml)
+[![Security](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/security.yml/badge.svg)](https://github.com/Samadritaacharya/platformpulse-developer-platform/actions/workflows/security.yml)
+[![Visual Site](https://img.shields.io/badge/Visual%20Site-GitHub%20Pages-40d7c7)](https://samadritaacharya.github.io/platformpulse-developer-platform/)
 
 PlatformPulse is an independent, end-to-end Developer Platform product prototype. It connects developer discovery, a secure self-service golden path, service ownership, CI/CD and SLO metrics, A/B experimentation, AI governance, feedback prioritisation and an evidence-based product roadmap.
 
 > **Responsible portfolio use:** every person, service, incident, survey response, experiment and AI use case is synthetic. The project is not affiliated with Kaufland e-commerce or any employer and contains no proprietary company information.
+
+## Public experiences
+
+- **Visual product website:** `https://samadritaacharya.github.io/platformpulse-developer-platform/`
+- **Complete interactive application:** deploy `app.py` free on Streamlit Community Cloud using the steps in [DEPLOYMENT.md](DEPLOYMENT.md).
+- **Source, tests and product documentation:** this repository.
+
+The GitHub Pages website is a recruiter-friendly visual front door. The Streamlit application is the complete product experience with all nine views and downloadable artefacts.
 
 ## Recruiter quick view
 
@@ -110,11 +120,7 @@ The CI pipeline validates:
 - [Demo data](docs/DEMO_DATA.md)
 - [QA and security report](docs/QA_SECURITY_REPORT.md)
 - [Security policy](SECURITY.md)
-- [Deployment guide](DEPLOYMENT.md)
-
-## Public deployment
-
-Deploy `app.py` from branch `main` on Streamlit Community Cloud. No secrets are required. After deployment, add the public URL to the repository **About** section.
+- [Free website deployment](DEPLOYMENT.md)
 
 ## Author
 
