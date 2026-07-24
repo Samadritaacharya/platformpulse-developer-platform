@@ -1,0 +1,66 @@
+progress {
+  appearance: none;
+  -webkit-appearance: none;
+  overflow: hidden;
+  border: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+progress::-webkit-progress-bar {
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+progress::-webkit-progress-value {
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  transition: width 200ms ease;
+}
+
+progress::-moz-progress-bar {
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), var(--primary-2));
+  transition: width 200ms ease;
+}
+
+.bar-progress {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.variant-bars progress {
+  width: 100%;
+  height: 15px;
+  border-radius: 999px;
+}
+
+.score-ring {
+  position: absolute;
+  right: 1.15rem;
+  bottom: 1.15rem;
+  width: 44%;
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+.governance-score p {
+  position: relative;
+  z-index: 2;
+  max-width: 52%;
+}
+
+@media (max-width: 620px) {
+  .score-ring {
+    position: static;
+    display: block;
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .governance-score p {
+    max-width: none;
+  }
+}
