@@ -1,0 +1,7 @@
+use_case_id,name,owner,stage,model_type,data_classification,external_model,data_residency,personal_data,automated_decision,human_oversight,access_control,audit_logging,business_purpose
+AI-001,Developer documentation assistant,Developer Experience,Pilot,Generative AI,Internal,1,EU,0,0,1,1,1,Answer questions from approved internal platform documentation
+AI-002,Incident summary and action draft,Platform Operations,Production,Generative AI,Confidential,1,EU,1,0,1,1,1,Draft incident summaries and follow-up actions for human review
+AI-003,Deployment risk recommendation,Release Engineering,Pilot,Machine Learning,Internal,0,EU,0,1,1,1,1,Recommend whether a release needs additional review
+AI-004,Unapproved public chatbot experiment,Unknown,Discovery,Generative AI,Restricted,1,Unknown,1,1,0,0,0,Prototype using copied operational tickets without approved controls
+AI-005,Support-ticket topic classification,Service Management,Production,Machine Learning,Confidential,0,EU,1,0,1,1,1,Classify support tickets to improve routing and trend analysis
+AI-006,Code review assistant,Engineering Productivity,Pilot,Generative AI,Confidential,1,EU,0,0,1,1,0,Suggest code-review observations while preserving engineer accountability
