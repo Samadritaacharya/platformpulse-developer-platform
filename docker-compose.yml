@@ -5,3 +5,12 @@ services:
       - "8501:8501"
     environment:
       STREAMLIT_BROWSER_GATHER_USAGE_STATS: "false"
+      HOME: "/tmp"
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped
