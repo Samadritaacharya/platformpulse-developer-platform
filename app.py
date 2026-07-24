@@ -1,8 +1,12 @@
 """Streamlit entry point for PlatformPulse."""
 from __future__ import annotations
 
-import runpy
+import importlib.util
+from pathlib import Path
 
-# Streamlit reruns this file in the same process. run_module executes the UI in
-# a fresh namespace on each interaction without reloading native extensions.
-runpy.run_module("platformpulse.ui", run_name="__main__")
+UI_PATH = Path(__file__).resolve().parent / "platformpulse" / "ui.py"
+SPEC = importlib.util.spec_from_file_location("_platformpulse_ui_runtime", UI_PATH)
+if SPEC is None or SPEC.loader is None:
+    raise RuntimeError("Unable to load the PlatformPulse UI module")
+MODULE = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(MODULE)
