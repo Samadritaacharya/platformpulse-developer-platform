@@ -1,0 +1,67 @@
+name: Interactive Web CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-ci.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-ci.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        run: npm install --no-audit --no-fund
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Deterministic engine tests
+        run: npm test
+      - name: Production build
+        run: npm run build
+      - name: Boot and HTTP smoke test
+        shell: bash
+        run: |
+          npm start -- -p 3000 > /tmp/platformpulse-web.log 2>&1 &
+          pid=$!
+          trap 'kill $pid || true; cat /tmp/platformpulse-web.log' EXIT
+          for i in {1..30}; do
+            if curl -fsS http://127.0.0.1:3000/api/run >/tmp/health.json; then break; fi
+            sleep 1
+          done
+          node <<'NODE'
+          const assert = require('node:assert/strict')
+          async function main() {
+            const health = await fetch('http://127.0.0.1:3000/api/run').then(r => r.json())
+            assert.equal(health.status, 'ok')
+            assert.equal(health.paid_api_required, false)
+            const page = await fetch('http://127.0.0.1:3000/').then(r => r.text())
+            assert.match(page, /PlatformPulse/)
+            for (const scenario of ['golden-path', 'reliability-pressure', 'ai-governance']) {
+              const response = await fetch('http://127.0.0.1:3000/api/run', { method: 'POST', headers: {'content-type':'application/json'}, body: JSON.stringify({ scenario, intensity: 65, context: 'synthetic CI smoke' }) })
+              assert.equal(response.status, 200)
+              const body = await response.json()
+              assert.equal(body.scenarioId, scenario)
+              assert.ok(body.score >= 0 && body.score <= 100)
+            }
+            const malformed = await fetch('http://127.0.0.1:3000/api/run', { method: 'POST', headers: {'content-type':'application/json'}, body: '{' })
+            assert.equal(malformed.status, 400)
+          }
+          main().catch((error) => { console.error(error); process.exit(1) })
+          NODE
